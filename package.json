@@ -1,0 +1,17 @@
+{
+  "name": "solar-system-simulator",
+  "version": "1.0.0",
+  "description": "Interactive 3D Solar System Simulator using Three.js",
+  "main": "src/main.js",
+  "scripts": {
+    "dev": "vite"
+  },
+  "dependencies": {
+    "three": "^0.155.0"
+  },
+  "devDependencies": {
+    "vite": "^5.2.0"
+  },
+  "author": "",
+  "license": "MIT"
+}
