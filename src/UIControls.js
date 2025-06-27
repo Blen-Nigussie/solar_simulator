@@ -25,6 +25,12 @@ export class UIControls {
     addControls() {
         const folder = this.gui.addFolder('Solar System Controls');
         
+        // Background color control
+        const colorController = folder.addColor(this.controls, 'backgroundColor').name('Background Color');
+        colorController.onChange((value) => {
+            this.scene.background = new THREE.Color(value);
+        });
+
         // Visibility controls
         folder.add(this.controls, 'showOrbits').onChange(this.toggleOrbits.bind(this));
         folder.add(this.controls, 'showStars').onChange(this.toggleStars.bind(this));
@@ -38,7 +44,6 @@ export class UIControls {
         folder.add(this.controls, 'rotationSpeed', 0.1, 2.0, 0.1).onChange(this.updateSpeed.bind(this));
         
         // Lighting controls
-        folder.addColor(this.controls, 'backgroundColor').onChange(this.updateBackground.bind(this));
         folder.add(this.controls, 'ambientLight', 0, 1, 0.1).onChange(this.updateLighting.bind(this));
         folder.add(this.controls, 'pointLight', 0, 5, 0.1).onChange(this.updateLighting.bind(this));
         
@@ -97,10 +102,6 @@ export class UIControls {
             planet.orbitSpeed *= value;
             planet.rotationSpeed *= value;
         });
-    }
-
-    updateBackground(color) {
-        this.scene.background = new THREE.Color(color);
     }
 
     updateLighting() {
