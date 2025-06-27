@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 
 export class Planet {
-  constructor({ name, radius, distance, texture, rotationSpeed, orbitSpeed, emissive }, isMoon = false) {
+  constructor({ name, radius, distance, texture, rotationSpeed = 0.002, orbitSpeed = 0.001, emissive }, isMoon = false) {
     this.name = name;
     this.radius = radius;
     this.distance = distance;
@@ -50,14 +50,21 @@ export class Planet {
   }
 
   update() {
-    this.mesh.rotation.y += this.rotationSpeed;
-    if (!this.isMoon && this.distance > 0) {
-      this.angle += this.orbitSpeed;
-      this.mesh.position.x = Math.cos(this.angle) * this.distance;
-      this.mesh.position.z = Math.sin(this.angle) * this.distance;
+    if (this.mesh) {
+      this.mesh.rotation.y += this.rotationSpeed;
+      if (!this.isMoon && this.distance > 0) {
+        this.angle += this.orbitSpeed;
+        this.mesh.position.x = Math.cos(this.angle) * this.distance;
+        this.mesh.position.z = Math.sin(this.angle) * this.distance;
+      }
     }
     
     this.updateMoons();
+  }
+
+  setSpeeds({ rotationSpeed, orbitSpeed }) {
+    this.rotationSpeed = rotationSpeed;
+    this.orbitSpeed = orbitSpeed;
   }
 
   updateMoons() {

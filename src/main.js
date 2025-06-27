@@ -28,7 +28,7 @@ controls.maxDistance = 300;
 
 // Initialize components
 const solarSystem = new SolarSystem(scene);
-const uiControls = new UIControls(scene);
+const uiControls = new UIControls(scene, solarSystem);
 const projectInfo = new ProjectInfo();
 
 // Raycaster for interactions

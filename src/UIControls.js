@@ -1,118 +1,90 @@
 import * as dat from 'dat.gui';
 
 export class UIControls {
-    constructor(scene, solarSystem, renderer) {
+    constructor(scene, solarSystem) {
         this.scene = scene;
         this.solarSystem = solarSystem;
-        this.renderer = renderer;
+        this.gui = new dat.GUI();
         
-        this.gui = new dat.GUI({ width: 300 });
+        // Create controls object
         this.controls = {
             showOrbits: true,
             showStars: true,
-            dayNight: false,
+            dayNight: true,
             planetScale: 1.0,
-            orbitSpeed: 1.0,
-            rotationSpeed: 1.0,
+            orbitSpeed: 0.01,
+            rotationSpeed: 0.02,
             backgroundColor: '#000000',
             ambientLight: 0.2,
             pointLight: 2.0
         };
 
-        this.addControls();
-    }
-
-    addControls() {
-        const folder = this.gui.addFolder('Solar System Controls');
-        
-        // Background color control
-        const colorController = folder.addColor(this.controls, 'backgroundColor').name('Background Color');
-        colorController.onChange((value) => {
-            this.scene.background = new THREE.Color(value);
+        // Add background color control
+        this.gui.addColor(this.controls, 'backgroundColor').name('Background Color').onChange((value) => {
+            this.scene.background.set(value);
         });
 
-        // Visibility controls
-        folder.add(this.controls, 'showOrbits').onChange(this.toggleOrbits.bind(this));
-        folder.add(this.controls, 'showStars').onChange(this.toggleStars.bind(this));
-        folder.add(this.controls, 'dayNight').onChange(this.toggleDayNight.bind(this));
-        
-        // Scale controls
-        folder.add(this.controls, 'planetScale', 0.1, 2.0, 0.1).onChange(this.updateScale.bind(this));
-        
-        // Speed controls
-        folder.add(this.controls, 'orbitSpeed', 0.1, 2.0, 0.1).onChange(this.updateSpeed.bind(this));
-        folder.add(this.controls, 'rotationSpeed', 0.1, 2.0, 0.1).onChange(this.updateSpeed.bind(this));
-        
-        // Lighting controls
-        folder.add(this.controls, 'ambientLight', 0, 1, 0.1).onChange(this.updateLighting.bind(this));
-        folder.add(this.controls, 'pointLight', 0, 5, 0.1).onChange(this.updateLighting.bind(this));
-        
-        folder.open();
-    }
-
-    toggleOrbits(value) {
-        const orbitLines = this.scene.getObjectByName('orbitLines');
-        if (orbitLines) {
-            orbitLines.visible = value;
-        }
-    }
-
-    toggleStars(value) {
-        const stars = this.scene.getObjectByName('stars');
-        if (stars) {
-            stars.visible = value;
-        }
-    }
-
-    toggleDayNight(value) {
-        const sun = this.scene.getObjectByName('Sun');
-        if (sun) {
-            // Toggle sun's emissive color
-            const material = sun.material;
-            if (value) {
-                material.emissive.set(0xffff00);
-                material.emissiveIntensity = 1;
-                // Also update point light
-                const pointLight = this.scene.getObjectByName('pointLight');
-                if (pointLight) {
-                    pointLight.intensity = this.controls.pointLight;
-                }
-            } else {
-                material.emissive.set(0x000000);
-                material.emissiveIntensity = 0;
-                // Dim point light
-                const pointLight = this.scene.getObjectByName('pointLight');
-                if (pointLight) {
-                    pointLight.intensity = 0.1;
-                }
-            }
-        }
-    }
-
-    updateScale(value) {
-        this.solarSystem.planetMeshes.forEach(mesh => {
-            if (mesh.name !== 'Sun') {
-                mesh.scale.set(value, value, value);
+        // Add other controls
+        this.gui.add(this.controls, 'showOrbits').name('Show Orbits').onChange((value) => {
+            const orbitLines = this.scene.getObjectByName('orbitLines');
+            if (orbitLines) {
+                orbitLines.visible = value;
             }
         });
-    }
 
-    updateSpeed(value) {
-        this.solarSystem.planets.forEach(planet => {
-            planet.orbitSpeed *= value;
-            planet.rotationSpeed *= value;
+        this.gui.add(this.controls, 'showStars').name('Show Stars').onChange((value) => {
+            const stars = this.scene.getObjectByName('stars');
+            if (stars) {
+                stars.visible = value;
+            }
         });
-    }
 
-    updateLighting() {
-        const ambientLight = this.scene.getObjectByName('ambientLight');
-        const pointLight = this.scene.getObjectByName('pointLight');
-        
-        if (ambientLight) {
-            ambientLight.intensity = this.controls.ambientLight;
-        }
-        if (pointLight) {
-            pointLight.intensity = this.controls.pointLight;
-        }
+        this.gui.add(this.controls, 'dayNight').name('Day/Night').onChange((value) => {
+            const sun = this.scene.getObjectByName('Sun');
+            if (sun) {
+                sun.material.emissiveIntensity = value ? 1 : 0;
+            }
+            
+            const pointLight = this.scene.getObjectByName('pointLight');
+            if (pointLight) {
+                pointLight.intensity = value ? 2 : 0.1;
+            }
+        });
+
+        this.gui.add(this.controls, 'planetScale', 0.1, 2.0, 0.1).name('Planet Scale').onChange((value) => {
+            this.solarSystem.planets.forEach(planet => {
+                planet.mesh.scale.set(value, value, value);
+            });
+        });
+
+        this.gui.add(this.controls, 'orbitSpeed', 0.001, 0.1, 0.001).name('Orbit Speed').onChange((value) => {
+            // Update all planets except the Sun
+            this.solarSystem.planets.forEach(planet => {
+                if (planet.name !== 'Sun') {
+                    planet.orbitSpeed = value;
+                }
+            });
+        });
+
+        this.gui.add(this.controls, 'rotationSpeed', 0.001, 0.2, 0.001).name('Rotation Speed').onChange((value) => {
+            // Update all planets
+            this.solarSystem.planets.forEach(planet => {
+                planet.rotationSpeed = value;
+            });
+        });
+
+        this.gui.add(this.controls, 'ambientLight', 0, 1, 0.1).name('Ambient Light').onChange((value) => {
+            const light = this.scene.getObjectByName('ambientLight');
+            if (light) {
+                light.intensity = value;
+            }
+        });
+
+        this.gui.add(this.controls, 'pointLight', 0, 5, 0.1).name('Point Light').onChange((value) => {
+            const light = this.scene.getObjectByName('pointLight');
+            if (light) {
+                light.intensity = value;
+            }
+        });
     }
 }
