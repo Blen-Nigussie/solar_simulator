@@ -8,18 +8,15 @@ import { ProjectInfo } from './ProjectInfo.js';
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x000000);
 
-// Camera setup
 const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
 camera.position.set(0, 40, 100);
 
-// Renderer setup
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 document.body.appendChild(renderer.domElement);
 
-// Controls setup
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 controls.dampingFactor = 0.05;
@@ -56,7 +53,6 @@ document.body.appendChild(planetInfo);
 let isDragging = false;
 let dragStart = null;
 
-// Add event listeners
 window.addEventListener('pointermove', onPointerMove, false);
 window.addEventListener('click', onClick, false);
 window.addEventListener('contextmenu', onRightClick, false);
