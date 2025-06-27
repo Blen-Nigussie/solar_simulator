@@ -13,6 +13,7 @@ export class Planet {
     this.texture = texture;
     this.emissive = emissive;
     this.mesh = this.createMesh();
+    
     if (!isMoon && distance > 0) {
       this.mesh.position.x = distance;
     }
@@ -20,26 +21,32 @@ export class Planet {
 
   createMesh() {
     const geometry = new THREE.SphereGeometry(this.radius, 32, 32);
-    let material;
-    if (this.emissive) {
-      material = new THREE.MeshStandardMaterial({
-        map: this.loadTexture(this.texture),
-        emissive: 0xffff00,
-        emissiveIntensity: 1
-      });
-    } else {
-      material = new THREE.MeshStandardMaterial({
-        map: this.loadTexture(this.texture)
-      });
-    }
+    const material = this.createMaterial();
     const mesh = new THREE.Mesh(geometry, material);
     mesh.name = this.name;
+    
+    // If this is the sun, set up its material properly
+    if (this.name === 'Sun') {
+      material.emissive.set(0xffff00);
+      material.emissiveIntensity = 1;
+    }
+    
     return mesh;
   }
 
+  createMaterial() {
+    const texture = this.loadTexture(this.texture);
+    const material = new THREE.MeshStandardMaterial({
+      map: texture,
+      emissive: this.emissive ? 0xffff00 : 0x000000,
+      emissiveIntensity: this.emissive ? 1 : 0
+    });
+    return material;
+  }
+
   loadTexture(filename) {
-    // Vite serves public/ as the root, so textures are at /textures/filename
-    return new THREE.TextureLoader().load(`/textures/${filename}`);
+    const loader = new THREE.TextureLoader();
+    return loader.load(`/textures/${filename}`);
   }
 
   update() {
@@ -49,10 +56,13 @@ export class Planet {
       this.mesh.position.x = Math.cos(this.angle) * this.distance;
       this.mesh.position.z = Math.sin(this.angle) * this.distance;
     }
-    if (this.isMoon) {
-      this.angle += this.orbitSpeed;
-      this.mesh.position.x = Math.cos(this.angle) * this.distance;
-      this.mesh.position.z = Math.sin(this.angle) * this.distance;
-    }
+    
+    this.updateMoons();
   }
-} 
+
+  updateMoons() {
+    this.moons.forEach(moon => {
+      moon.update();
+    });
+  }
+}
