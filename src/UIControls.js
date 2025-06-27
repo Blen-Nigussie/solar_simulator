@@ -6,7 +6,7 @@ export class UIControls {
         this.solarSystem = solarSystem;
         this.gui = new dat.GUI();
         
-        // Create controls object
+       
         this.controls = {
             showOrbits: true,
             showStars: true,
@@ -19,12 +19,11 @@ export class UIControls {
             pointLight: 2.0
         };
 
-        // Add background color control
         this.gui.addColor(this.controls, 'backgroundColor').name('Background Color').onChange((value) => {
             this.scene.background.set(value);
         });
 
-        // Add other controls
+     
         this.gui.add(this.controls, 'showOrbits').name('Show Orbits').onChange((value) => {
             const orbitLines = this.scene.getObjectByName('orbitLines');
             if (orbitLines) {
@@ -67,7 +66,7 @@ export class UIControls {
         });
 
         this.gui.add(this.controls, 'rotationSpeed', 0.001, 0.2, 0.001).name('Rotation Speed').onChange((value) => {
-            // Update all planets
+       
             this.solarSystem.planets.forEach(planet => {
                 planet.rotationSpeed = value;
             });
