@@ -5,7 +5,6 @@ export class ProjectInfo {
     }
 
     createPanel() {
-        // Create the main container
         this.container = document.createElement('div');
         this.container.className = 'project-info';
         this.container.style.cssText = `
@@ -23,7 +22,6 @@ export class ProjectInfo {
             overflow-y: auto;
         `;
 
-        // Create toggle button
         this.toggleButton = document.createElement('button');
         this.toggleButton.className = 'info-toggle';
         this.toggleButton.style.cssText = `
@@ -43,7 +41,6 @@ export class ProjectInfo {
         `;
         this.toggleButton.innerHTML = 'ℹ️';
 
-        // Create content
         this.content = document.createElement('div');
         this.content.style.cssText = `
             margin-top: 20px;
