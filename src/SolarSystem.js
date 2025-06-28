@@ -178,6 +178,24 @@ export class SolarSystem {
     });
   }
 
+  getInteractiveObjects() {
+    return this.planetMeshes;
+  }
+
+  showPlanetInfo(name) {
+    const infoDiv = document.getElementById('info');
+    const data = this.planetData.find(p => p.name === name);
+    if (data) {
+      infoDiv.innerHTML = `<b>${data.name}</b><br>Distance: ${data.distance || 'N/A'} AU<br>Radius: ${data.radius} units`;
+      infoDiv.style.display = 'block';
+      infoDiv.style.opacity = 1;
+      setTimeout(() => { 
+        infoDiv.style.opacity = 0;
+        setTimeout(() => { infoDiv.style.display = 'none'; }, 300);
+      }, 3000);
+    }
+  }
+
   getPlanetByName(name) {
     return this.planets.find(planet => planet.name === name);
   }

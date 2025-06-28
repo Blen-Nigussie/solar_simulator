@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 
 export class Planet {
-  constructor({ name, radius, distance, texture, rotationSpeed = 0.002, orbitSpeed = 0.001, emissive }, isMoon = false) {
+  constructor({ name, radius, distance, texture, rotationSpeed = 0.002, orbitSpeed = 0.001, emissive, rings = false }, isMoon = false) {
     this.name = name;
     this.radius = radius;
     this.distance = distance;
@@ -12,10 +12,10 @@ export class Planet {
     this.moons = [];
     this.texture = texture;
     this.emissive = emissive;
+    this.rings = rings;
     this.mesh = this.createMesh();
     
     if (isMoon) {
-
       this.mesh.position.x = Math.cos(this.angle) * this.distance;
       this.mesh.position.z = Math.sin(this.angle) * this.distance;
     }
@@ -25,16 +25,17 @@ export class Planet {
     const meshGroup = new THREE.Group();
     meshGroup.name = this.name;
 
+    const material = this.createMaterial();
     const planetMesh = new THREE.Mesh(
       new THREE.SphereGeometry(this.radius, 32, 32),
-      this.createMaterial()
+      material
     );
-    group.add(planetMesh);
+    meshGroup.add(planetMesh);
 
     if (this.rings) {
       const ringGeometry = new THREE.RingGeometry(this.radius * 1.5, this.radius * 2.5, 64);
       const ringMaterial = new THREE.MeshStandardMaterial({
-        map: this.loadTexture('/textures/8k_saturn_ring_alpha.jpg'),
+        map: this.loadTexture('8k_saturn_ring_alpha.png'),
         side: THREE.DoubleSide,
         transparent: true,
         opacity: 0.8
@@ -43,7 +44,6 @@ export class Planet {
       ringMesh.rotation.x = Math.PI / 2; // Rotate the ring to be horizontal
       meshGroup.add(ringMesh);
     }
-    this.mesh = meshGroup;
 
     if (this.name === 'Sun') {
       material.emissive.set(0xffff00);
@@ -92,9 +92,10 @@ export class Planet {
   }
 
   dispose() {
-
+    if (this.mesh) {
       this.mesh.geometry.dispose();
       this.mesh.material.dispose();
       this.mesh = null;  
+    }
   }
 }
