@@ -3,7 +3,6 @@ export class ProjectInfo {
         this.createPanel();
         this.addEventListeners();
     }
-
     createPanel() {
         this.container = document.createElement('div');
         this.container.className = 'project-info';
