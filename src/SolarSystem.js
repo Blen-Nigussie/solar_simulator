@@ -153,8 +153,6 @@ export class SolarSystem {
       const planet = new Planet(data);
       this.scene.add(planet.mesh);
       this.planets.push(planet);
-      
-      // Make sure the sun has a proper name
       if (data.name === 'Sun') {
         planet.mesh.name = 'Sun';
       }
@@ -184,7 +182,6 @@ export class SolarSystem {
     return this.planets.find(planet => planet.name === name);
   }
 
-  // Add this method to get the sun mesh
   getSun() {
     return this.scene.getObjectByName('Sun');
   }
