@@ -74,6 +74,32 @@ export class SolarSystem {
           }
         ]
       },
+      {name: 'Saturn',
+        radius: 3, 
+        distance: 35, 
+        texture: 'saturn.jpg', 
+        rotationSpeed: 0.03, 
+        orbitSpeed: 0.007,
+        rings: true,
+        moons: [
+          { 
+            name: 'Titan', 
+            radius: 0.9, 
+            distance: 6, 
+            texture: 'titan.jpg', 
+            rotationSpeed: 0.02, 
+            orbitSpeed: 0.03 
+          },
+          { 
+            name: 'Enceladus', 
+            radius: 0.4, 
+            distance: 8, 
+            texture: 'enceladus.jpg', 
+            rotationSpeed: 0.015, 
+            orbitSpeed: 0.025 
+          }
+        ]
+      },
       {
         name: 'Jupiter', 
         radius: 4, 
@@ -98,6 +124,22 @@ export class SolarSystem {
             texture: 'europa.jpg', 
             rotationSpeed: 0.015, 
             orbitSpeed: 0.05 
+          },
+          { 
+            name: 'Ganymede', 
+            radius: 0.9, 
+            distance: 12, 
+            texture: 'ganymede.jpg', 
+            rotationSpeed: 0.014, 
+            orbitSpeed: 0.04 
+          },
+          { 
+            name: 'Callisto', 
+            radius: 0.85, 
+            distance: 14, 
+            texture: 'callisto.jpg', 
+            rotationSpeed: 0.013, 
+            orbitSpeed: 0.03 
           }
         ]
       }
