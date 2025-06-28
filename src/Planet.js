@@ -41,7 +41,7 @@ export class Planet {
         opacity: 0.8
        });
       const ringMesh = new THREE.Mesh(ringGeometry, ringMaterial);
-      ringMesh.rotation.x = Math.PI / 2; // Rotate the ring to be horizontal
+      ringMesh.rotation.x = Math.PI / 2; 
       meshGroup.add(ringMesh);
     }
 
