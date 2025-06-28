@@ -126,6 +126,9 @@ export class SolarSystem {
           return moon;
         });
       }
+      if (data.distance > 0) {
+        data.orbitSpeed = 0.02 * Math.sqrt(1/data.distance); // Adjust orbit speed based on distance (Kepler's Third Law)
+      }
     });
   }
 
