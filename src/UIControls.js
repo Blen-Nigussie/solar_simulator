@@ -85,5 +85,10 @@ export class UIControls {
                 light.intensity = value;
             }
         });
+        this.gui.add(this.controls, 'reset').name('Reset View').onChange(() => {
+            this.controls.planetScale = 1.0;
+            this.controls.orbitSpeed = 0.01;
+            this.controls.rotationSpeed = 0.02;
+        });
     }
 }
