@@ -1,5 +1,4 @@
 import { Planet } from './Planet.js';
-import * as THREE from 'three';
 
 export class SolarSystem {
   constructor(scene) {
