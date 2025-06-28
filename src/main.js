@@ -78,7 +78,7 @@ controls.dampingFactor = 0.05;
 controls.minDistance = 20;
 controls.maxDistance = 300;
 
-// Starfield background
+
 function createStarfield() {
   const starGeometry = new THREE.BufferGeometry();
   const starCount = 2000;
@@ -110,10 +110,10 @@ sunLight.shadow.mapSize.width = 1024;
 sunLight.shadow.mapSize.height = 1024;
 scene.add(sunLight);
 
-// Solar System
+
 const solarSystem = new SolarSystem(scene);
 
-// Draw orbit lines
+
 function drawOrbitLines() {
   solarSystem.planetData.forEach((data) => {
     if (data.distance > 0) {
@@ -128,7 +128,6 @@ function drawOrbitLines() {
 }
 drawOrbitLines();
 
-// Sun glow (sprite) and animated pulse
 const SunPulseState = { Growing: 0, Shrinking: 1 };
 let sunPulseState = SunPulseState.Growing;
 let sunGlowSprite = null;
@@ -145,7 +144,6 @@ function addSunGlow() {
 }
 addSunGlow();
 
-// Raycaster for interaction
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 let hoveredPlanet = null;
@@ -178,7 +176,7 @@ function onClick(event) {
   const intersects = raycaster.intersectObjects(solarSystem.getInteractiveObjects());
   if (intersects.length > 0) {
     const planet = intersects[0].object;
-    // Play click sound with error handling
+   
     try {
       clickSound.currentTime = 0;
       clickSound.play().then(() => {
