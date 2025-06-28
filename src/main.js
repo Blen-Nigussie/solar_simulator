@@ -2,29 +2,25 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { SolarSystem } from './SolarSystem.js';
 
-// Ambient background sound with better error handling
 const ambientAudio = new Audio('/sounds/space_ambient.mp3');
 ambientAudio.loop = true;
 ambientAudio.volume = 0.2;
 
-// Click sound for planet selection
+
 const clickSound = new Audio('/sounds/click.mp3');
 clickSound.volume = 0.5;
 
-// Sound initialization function
 function initSounds() {
   console.log('Initializing sounds...');
   
-  // Try to play ambient sound
+
   ambientAudio.play().then(() => {
     console.log('Ambient sound started successfully');
   }).catch((error) => {
     console.log('Autoplay blocked, waiting for user interaction');
-    // Add event listeners for user interaction
     const startSound = () => {
       ambientAudio.play().then(() => {
         console.log('Ambient sound started on user interaction');
-        // Remove the event listeners after successful start
         document.removeEventListener('click', startSound);
         document.removeEventListener('keydown', startSound);
         document.removeEventListener('mousemove', startSound);
@@ -38,7 +34,6 @@ function initSounds() {
     document.addEventListener('mousemove', startSound, { once: true });
   });
   
-  // Test click sound
   clickSound.addEventListener('canplaythrough', () => {
     console.log('Click sound loaded successfully');
   });
@@ -47,7 +42,7 @@ function initSounds() {
     console.log('Ambient sound loaded successfully');
   });
   
-  // Error handling
+ 
   ambientAudio.addEventListener('error', (e) => {
     console.error('Ambient sound error:', e);
   });
@@ -57,7 +52,7 @@ function initSounds() {
   });
 }
 
-// Initialize sounds
+
 initSounds();
 
 const scene = new THREE.Scene();
@@ -100,7 +95,6 @@ function createStarfield() {
 }
 createStarfield();
 
-// Lighting
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
 scene.add(ambientLight);
 const sunLight = new THREE.PointLight(0xffffff, 2, 0);
@@ -192,7 +186,7 @@ function onClick(event) {
 }
 window.addEventListener('click', onClick, false);
 
-// Camera zoom to planet on double-click
+
 function onDoubleClick(event) {
   mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
   mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
@@ -200,7 +194,7 @@ function onDoubleClick(event) {
   const intersects = raycaster.intersectObjects(solarSystem.getInteractiveObjects());
   if (intersects.length > 0) {
     const planet = intersects[0].object;
-    // Animate camera to planet
+    
     const target = planet.position.clone();
     const start = camera.position.clone();
     const end = target.clone().add(new THREE.Vector3(0, 8, 18));
@@ -228,7 +222,7 @@ window.addEventListener('resize', () => {
   renderer.setSize(window.innerWidth, window.innerHeight);
 });
 
-// Enhanced info panel styling and fade/close
+
 const infoDiv = document.getElementById('info');
 infoDiv.style.fontFamily = 'Segoe UI, Arial, sans-serif';
 infoDiv.style.fontSize = '1.1em';
@@ -246,7 +240,7 @@ if (closeInfoBtn) {
   };
 }
 
-// Animate sun pulse and render
+
 function animate() {
   requestAnimationFrame(animate);
   solarSystem.update();
