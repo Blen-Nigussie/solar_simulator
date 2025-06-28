@@ -57,7 +57,6 @@ export class UIControls {
         });
 
         this.gui.add(this.controls, 'orbitSpeed', 0.001, 0.1, 0.001).name('Orbit Speed').onChange((value) => {
-            // Update all planets except the Sun
             this.solarSystem.planets.forEach(planet => {
                 if (planet.name !== 'Sun') {
                     planet.orbitSpeed = value;
