@@ -245,7 +245,6 @@ function animate() {
   requestAnimationFrame(animate);
   solarSystem.update();
   controls.update();
-  // Animate sun glow pulse
   if (sunGlowSprite) {
     if (sunPulseState === 0) {
       sunGlowScale += 0.04;
