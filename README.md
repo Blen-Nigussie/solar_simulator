@@ -26,13 +26,3 @@ An interactive 3D web-based simulation of the solar system using Three.js. Explo
    npm start
    ```
 4. Open your browser at `http://localhost:3000` (or as indicated in the terminal).
-
-## Deployment
-- Deploy to GitHub Pages or any static hosting provider.
-
-## Controls
-- Use mouse to orbit, zoom, and pan the camera.
-- Click on planets to view information.
-
-## License
-MIT 
