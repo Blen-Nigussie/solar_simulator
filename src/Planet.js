@@ -31,7 +31,6 @@ export class Planet {
     );
     group.add(planetMesh);
 
-    //Add rings if the planet has them
     if (this.rings) {
       const ringGeometry = new THREE.RingGeometry(this.radius * 1.5, this.radius * 2.5, 64);
       const ringMaterial = new THREE.MeshStandardMaterial({
@@ -46,8 +45,6 @@ export class Planet {
     }
     this.mesh = meshGroup;
 
-
-    // If this is the sun, set up its material properly
     if (this.name === 'Sun') {
       material.emissive.set(0xffff00);
       material.emissiveIntensity = 1;
