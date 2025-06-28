@@ -14,24 +14,46 @@ export class Planet {
     this.emissive = emissive;
     this.mesh = this.createMesh();
     
-    if (!isMoon && distance > 0) {
-      this.mesh.position.x = distance;
+    if (isMoon) {
+
+      this.mesh.position.x = Math.cos(this.angle) * this.distance;
+      this.mesh.position.z = Math.sin(this.angle) * this.distance;
     }
   }
 
   createMesh() {
-    const geometry = new THREE.SphereGeometry(this.radius, 32, 32);
-    const material = this.createMaterial();
-    const mesh = new THREE.Mesh(geometry, material);
-    mesh.name = this.name;
-    
+    const meshGroup = new THREE.Group();
+    meshGroup.name = this.name;
+
+    const planetMesh = new THREE.Mesh(
+      new THREE.SphereGeometry(this.radius, 32, 32),
+      this.createMaterial()
+    );
+    group.add(planetMesh);
+
+    //Add rings if the planet has them
+    if (this.rings) {
+      const ringGeometry = new THREE.RingGeometry(this.radius * 1.5, this.radius * 2.5, 64);
+      const ringMaterial = new THREE.MeshStandardMaterial({
+        map: this.loadTexture('/textures/8k_saturn_ring_alpha.jpg'),
+        side: THREE.DoubleSide,
+        transparent: true,
+        opacity: 0.8
+       });
+      const ringMesh = new THREE.Mesh(ringGeometry, ringMaterial);
+      ringMesh.rotation.x = Math.PI / 2; // Rotate the ring to be horizontal
+      meshGroup.add(ringMesh);
+    }
+    this.mesh = meshGroup;
+
+
     // If this is the sun, set up its material properly
     if (this.name === 'Sun') {
       material.emissive.set(0xffff00);
       material.emissiveIntensity = 1;
     }
     
-    return mesh;
+    return meshGroup;
   }
 
   createMaterial() {
@@ -45,8 +67,7 @@ export class Planet {
   }
 
   loadTexture(filename) {
-    const loader = new THREE.TextureLoader();
-    return loader.load(`/textures/${filename}`);
+    return new THREE.TextureLoader().load(`/textures/${filename}`);
   }
 
   update() {
@@ -71,5 +92,12 @@ export class Planet {
     this.moons.forEach(moon => {
       moon.update();
     });
+  }
+
+  dispose() {
+
+      this.mesh.geometry.dispose();
+      this.mesh.material.dispose();
+      this.mesh = null;  
   }
 }
