@@ -28,11 +28,11 @@ An interactive 3D web-based simulation of the solar system using Three.js. Explo
 4. Open your browser at `http://localhost:3000` (or as indicated in the terminal).
 
 Group Members
-Blen Nigussie………………………….UGR/3480/15
-Derartu Nigatu……………………….UGR/5597/15
-Eden Zewdu……………........…UGR/9956/15
-Eyob Fikre…………………………… ……UGR/9963/15
-Hasset Dejene........  .UGR/7979/15
-Bruk getachew ......... UGR/0488/14
+{Blen Nigussie.......UGR/3480/15}
+{Derartu Nigatu.......UGR/5597/15}
+{Eden Zewdu........UGR/9956/15}
+{Eyob Fikre.......UGR/9963/15}
+{Hasset Dejene.......UGR/7979/15}
+{Bruk getachew.......UGR/0488/14}
 
 
