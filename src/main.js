@@ -1,6 +1,8 @@
-
+// Import the core THREE.js library which provides the 3D engine
 import * as THREE from 'three';
+// Import OrbitControls to allow mouse interaction like rotate, zoom, and pan
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+// Import the custom SolarSystem class or module that defines planets, sun, and logic
 import { SolarSystem } from './SolarSystem.js';
 
 const ambientAudio = new Audio('/sounds/space_ambient.mp3');
